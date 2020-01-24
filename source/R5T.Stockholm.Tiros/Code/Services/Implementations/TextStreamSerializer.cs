@@ -10,11 +10,13 @@ namespace R5T.Stockholm.Tiros
     public class TextStreamSerializer<T> : IStreamSerializer<T>
     {
         private ITextSerializer<T> TextSerializer { get; }
+        private IStreamSerializerOptions<T> StreamSerializerOptions { get; }
 
 
-        public TextStreamSerializer(ITextSerializer<T> textSerializer)
+        public TextStreamSerializer(ITextSerializer<T> textSerializer, IStreamSerializerOptions<T> streamSerializerOptions)
         {
             this.TextSerializer = textSerializer;
+            this.StreamSerializerOptions = streamSerializerOptions;
         }
 
         public T Deserialize(Stream stream)
@@ -28,7 +30,17 @@ namespace R5T.Stockholm.Tiros
 
         public void Serialize(Stream stream, T value)
         {
-            using (var textWriter = StreamWriterHelper.NewLeaveOpen(stream))
+            StreamWriter GetStreamWriter()
+            {
+                var streamWriter = this.StreamSerializerOptions.AddByteOrderMark
+                    ? StreamWriterHelper.NewLeaveOpenAddBOM(stream)
+                    : StreamWriterHelper.NewLeaveOpen(stream)
+                    ;
+
+                return streamWriter;
+            }
+
+            using (var textWriter = GetStreamWriter())
             {
                this.TextSerializer.Serialize(textWriter, value);
             }
