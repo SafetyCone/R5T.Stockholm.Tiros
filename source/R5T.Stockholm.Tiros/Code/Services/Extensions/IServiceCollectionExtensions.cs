@@ -15,7 +15,7 @@ namespace R5T.Stockholm.Tiros
         /// <summary>
         /// Adds the <see cref="TextStreamSerializer{T}"/> implementation of <see cref="IStreamSerializer{T}"/> as a <see cref="ServiceLifetime.Singleton"/>.
         /// </summary>
-        public static IServiceCollection AddTextStreamSerializer<T>(this IServiceCollection services,
+        public static IServiceCollection AddTirosTextStreamSerializer<T>(this IServiceCollection services,
             ServiceAction<ITextSerializer<T>> addTextSerializer,
             ServiceAction<IOptions<StreamSerializerOptions<T>>> addStreamSerializerOptions)
         {
@@ -31,11 +31,11 @@ namespace R5T.Stockholm.Tiros
         /// <summary>
         /// Adds the <see cref="TextStreamSerializer{T}"/> implementation of <see cref="IStreamSerializer{T}"/> as a <see cref="ServiceLifetime.Singleton"/>.
         /// </summary>
-        public static ServiceAction<IStreamSerializer<T>> AddTextStreamSerializerAction<T>(this IServiceCollection services,
+        public static ServiceAction<IStreamSerializer<T>> AddTirosTextStreamSerializerAction<T>(this IServiceCollection services,
             ServiceAction<ITextSerializer<T>> addTextSerializer,
             ServiceAction<IOptions<StreamSerializerOptions<T>>> addStreamSerializerOptions)
         {
-            var serviceAction = new ServiceAction<IStreamSerializer<T>>(() => services.AddTextStreamSerializer<T>(
+            var serviceAction = new ServiceAction<IStreamSerializer<T>>(() => services.AddTirosTextStreamSerializer<T>(
                 addTextSerializer,
                 addStreamSerializerOptions));
             return serviceAction;
