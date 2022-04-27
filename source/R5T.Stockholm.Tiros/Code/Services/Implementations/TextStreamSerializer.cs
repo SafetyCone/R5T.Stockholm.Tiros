@@ -3,14 +3,16 @@ using System.IO;
 
 using Microsoft.Extensions.Options;
 
-using R5T.Magyar.IO;
 using R5T.Stockholm.Default;
 using R5T.Tiros;
+
+using R5T.T0064;
 
 
 namespace R5T.Stockholm.Tiros
 {
-    public class TextStreamSerializer<T> : IStreamSerializer<T>
+    [ServiceImplementationMarker]
+    public class TextStreamSerializer<T> : IStreamSerializer<T>, IServiceImplementation
     {
         private ITextSerializer<T> TextSerializer { get; }
         private IOptions<StreamSerializerOptions<T>> StreamSerializerOptions { get; }
